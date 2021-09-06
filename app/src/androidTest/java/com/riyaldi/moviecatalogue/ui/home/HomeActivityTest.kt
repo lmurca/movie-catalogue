@@ -1,21 +1,11 @@
 package com.riyaldi.moviecatalogue.ui.home
 
-import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ActivityScenario
-import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
-import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.swipeUp
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.RecyclerViewActions
-import androidx.test.espresso.matcher.ViewMatchers.*
-import com.riyaldi.moviecatalogue.R
 import com.riyaldi.moviecatalogue.utils.DataDummy
 import com.riyaldi.moviecatalogue.utils.EspressoIdlingResource
 import org.junit.After
 import org.junit.Before
-import org.junit.Test
 
 class HomeActivityTest {
 
@@ -33,140 +23,15 @@ class HomeActivityTest {
         IdlingRegistry.getInstance().unregister(EspressoIdlingResource.getEspressoIdlingResource())
     }
 
-    @Test
-    fun loadMovies() {
-        onView(withId(R.id.rv_movies)).check(matches(isDisplayed()))
-        onView(withId(R.id.rv_movies)).perform(
-                RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
-                        dummyMovie.size
-                )
-        )
-    }
+    // TEST 1: Check recycler view is displayed, click on an elements then all details is displayed correctly
 
-    @Test
-    fun loadDetailMovie() {
-        onView(withId(R.id.rv_movies)).check(matches(isDisplayed()))
-        onView(withId(R.id.rv_movies)).perform(
-                RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
-                        0,
-                        click()
-                )
-        )
-        onView(withId(R.id.iv_detail)).check(matches(isDisplayed()))
-        onView(withId(R.id.coordinator_layout)).perform(swipeUp())
-        onView(withId(R.id.iv_backdrop)).check(matches(isDisplayed()))
-        onView(withId(R.id.collapsing)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_detail_genre_duration)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_detail_overview)).check(matches(isDisplayed()))
-    }
+    // TEST 2: Click on tv show menu option, check if a list of tv shows is displayed
 
-    @Test
-    fun loadTvShows() {
-        onView(withId(R.id.tvShowFragment)).perform(click())
-        onView(withId(R.id.rv_tv_shows)).check(matches(isDisplayed()))
-        onView(withId(R.id.rv_tv_shows)).perform(
-                RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
-                        dummyTvShow.size
-                )
-        )
-    }
+    // TEST 3: Click on tv show menu option, check if a list of tv shows is displayed, click on a tv show then display details of that tv show
 
-    @Test
-    fun loadDetailTvShow() {
-        onView(withId(R.id.tvShowFragment)).perform(click())
-        onView(withId(R.id.rv_tv_shows)).check(matches(isDisplayed()))
-        onView(withId(R.id.rv_tv_shows)).perform(
-                RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
-                        0,
-                        click()
-                )
-        )
-        onView(withId(R.id.iv_detail)).check(matches(isDisplayed()))
-        onView(withId(R.id.coordinator_layout)).perform(swipeUp())
-        onView(withId(R.id.iv_backdrop)).check(matches(isDisplayed()))
-        onView(withId(R.id.collapsing)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_detail_genre_duration)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_detail_overview)).check(matches(isDisplayed()))
-    }
+    // TEST 4: Click on favorites menu option, check if a list of favorites is displayed
 
-    @Test
-    fun loadFavMovies() {
-        onView(withId(R.id.favoriteFragment)).perform(click())
-        onView(withId(R.id.rv_fav_movies)).check(matches(isDisplayed()))
-        onView(withId(R.id.rv_fav_movies)).perform(
-                RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
-                        dummyMovie.size
-                )
-        )
-    }
+    // TEST 5: Click on movie, add it to favorites, press back, click on favorite menu option, check if that movie was added
 
-    @Test
-    fun loadDetailFavMovie() {
-        onView(withId(R.id.rv_movies)).check(matches(isDisplayed()))
-        onView(withId(R.id.rv_movies)).perform(
-                RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
-                        0,
-                        click()
-                )
-        )
-        onView(withId(R.id.fab_add_to_favorite)).perform(click())
-        onView(isRoot()).perform(ViewActions.pressBack())
-
-        onView(withId(R.id.favoriteFragment)).perform(click())
-        onView(withId(R.id.rv_fav_movies)).perform(
-                RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
-                        0,
-                        click()
-                )
-        )
-        onView(withId(R.id.iv_detail)).check(matches(isDisplayed()))
-        onView(withId(R.id.fab_add_to_favorite)).perform(click())
-        onView(withId(R.id.coordinator_layout)).perform(swipeUp())
-        onView(withId(R.id.iv_backdrop)).check(matches(isDisplayed()))
-        onView(withId(R.id.collapsing)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_detail_genre_duration)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_detail_overview)).check(matches(isDisplayed()))
-    }
-
-    @Test
-    fun loadFavTvShows() {
-        onView(withId(R.id.favoriteFragment)).perform(click())
-        onView(withText("TV SHOW")).perform(click())
-        onView(withId(R.id.rv_fav_tv_show)).check(matches(isDisplayed()))
-        onView(withId(R.id.rv_fav_tv_show)).perform(
-                RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
-                        dummyTvShow.size
-                )
-        )
-    }
-
-    @Test
-    fun loadDetailFavTvShow() {
-        onView(withId(R.id.tvShowFragment)).perform(click())
-        onView(withId(R.id.rv_tv_shows)).check(matches(isDisplayed()))
-        onView(withId(R.id.rv_tv_shows)).perform(
-                RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
-                        0,
-                        click()
-                )
-        )
-        onView(withId(R.id.fab_add_to_favorite)).perform(click())
-        onView(isRoot()).perform(ViewActions.pressBack())
-
-        onView(withId(R.id.favoriteFragment)).perform(click())
-        onView(withText("TV SHOW")).perform(click())
-        onView(withId(R.id.rv_fav_tv_show)).perform(
-                RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
-                        0,
-                        click()
-                )
-        )
-        onView(withId(R.id.iv_detail)).check(matches(isDisplayed()))
-        onView(withId(R.id.fab_add_to_favorite)).perform(click())
-        onView(withId(R.id.coordinator_layout)).perform(swipeUp())
-        onView(withId(R.id.iv_backdrop)).check(matches(isDisplayed()))
-        onView(withId(R.id.collapsing)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_detail_genre_duration)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_detail_overview)).check(matches(isDisplayed()))
-    }
+    // TEST 6, 7, 8, 9... It's your turn! Try to identify new scenarios!
 }
